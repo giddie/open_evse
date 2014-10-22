@@ -146,14 +146,14 @@ prog_char VERSTR[] PROGMEM = "2.1.0";
 #define DEFAULT_SERVICE_LEVEL 2 // 1=L1, 2=L2
 
 // current capacity in amps
-#define DEFAULT_CURRENT_CAPACITY_L1 12
-#define DEFAULT_CURRENT_CAPACITY_L2 16
+#define DEFAULT_CURRENT_CAPACITY_L1 10
+#define DEFAULT_CURRENT_CAPACITY_L2 10
 
 // minimum allowable current in amps
 #define MIN_CURRENT_CAPACITY 6
 
 // maximum allowable current in amps
-#define MAX_CURRENT_CAPACITY_L1 16 // J1772 Max for L1 on a 20A circuit
+#define MAX_CURRENT_CAPACITY_L1 30 // J1772 Max for L1
 #define MAX_CURRENT_CAPACITY_L2 80 // J1772 Max for L2
 
 //J1772EVSEController
@@ -2879,8 +2879,8 @@ Menu *SvcLevelMenu::Select()
   return &g_SetupMenu;
 }
 
-uint8_t g_L1MaxAmps[] = {6,10,12,14,15,16,0};
-uint8_t g_L2MaxAmps[] = {10,16,20,25,30,35,40,45,50,55,60,65,70,75,80,0};
+uint8_t g_L1MaxAmps[] = {6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,0};
+uint8_t* g_L2MaxAmps = g_L1MaxAmps;
 MaxCurrentMenu::MaxCurrentMenu()
 {
   m_Title = g_psMaxCurrent;
