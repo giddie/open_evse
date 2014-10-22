@@ -98,7 +98,7 @@ prog_char VERSTR[] PROGMEM = "2.1.0";
 #endif // BTN_MENU
 
 // Option for RTC and DelayTime
-//#define RTC // enable RTC & timer functions
+#define RTC // enable RTC & timer functions
 
 #ifdef RTC
 // Option for Delay Timer - GoldServe
