@@ -15,8 +15,8 @@
   7/11/13  20b5	Scott Rubin	skips POST if EV is connected, won't charge if open ground or stuck relay
   8/12/13  20b5b Scott Rubin    fix GFI error - changed gfi.Reset() to check for constant GFI signal
   8/26/13  20b6 Scott Rubin     add Stuck Relay State delay, fix Stuck Relay state exit (for Active E)
-  9/20/13  20b7 Chris Howell    updated/tweaked/shortened CLI messages   
-  
+  9/20/13  20b7 Chris Howell    updated/tweaked/shortened CLI messages
+
  * This file is part of Open EVSE.
 
  * Open EVSE is free software; you can redistribute it and/or modify
@@ -62,7 +62,7 @@ prog_char VERSTR[] PROGMEM = "2.1.0";
 #define GFI_SELFTEST
 
 // serial port command line
-// For the RTC version, only CLI or LCD can be defined at one time. 
+// For the RTC version, only CLI or LCD can be defined at one time.
 // There is a directive to take care of that if you forget.
 #define SERIALCLI
 
@@ -79,8 +79,8 @@ prog_char VERSTR[] PROGMEM = "2.1.0";
 #define ADVPWR
 
 // single button menus (needs LCD enabled)
-// connect an SPST button between BTN_PIN and GND or enable ADAFRUIT_BTN to use the 
-// select button of the Adafruit RGB LCD 
+// connect an SPST button between BTN_PIN and GND or enable ADAFRUIT_BTN to use the
+// select button of the Adafruit RGB LCD
 // How to use 1-button menu
 // Long press activates menu
 // When within menus, short press cycles menu items, long press selects and exits current submenu
@@ -225,7 +225,7 @@ prog_char VERSTR[] PROGMEM = "2.1.0";
 #define BLUE 0x4
 #define TEAL 0x6
 #define VIOLET 0x5
-#define WHITE 0x7 
+#define WHITE 0x7
 
 #if defined(RGBLCD) || defined(I2CLCD)
 // Using LiquidTWI2 for both types of I2C LCD's
@@ -265,17 +265,17 @@ class CLI {
 public:
   CLI();
   void Init();
-  void println(char *s) { 
-    Serial.println(s); 
+  void println(char *s) {
+    Serial.println(s);
   }
   void println_P(prog_char *s);
-  void print(char *s) { 
-    Serial.print(s); 
+  void print(char *s) {
+    Serial.print(s);
   }
   void print_P(prog_char *s);
   void printlnn();
-  void flush() { 
-    Serial.flush(); 
+  void flush() {
+    Serial.flush();
   }
   void getInput();
   uint8_t getInt();
@@ -286,7 +286,7 @@ public:
 char *g_BlankLine = "                ";
 #endif // LCD16X2
 
-class OnboardDisplay 
+class OnboardDisplay
 
 {
 #if defined(RGBLCD) || defined(I2CLCD)
@@ -301,42 +301,42 @@ public:
   void SetGreenLed(uint8_t state);
   void SetRedLed(uint8_t state);
 #ifdef LCD16X2
-  void LcdBegin(int x,int y) { 
+  void LcdBegin(int x,int y) {
 #ifdef I2CLCD
     m_Lcd.setMCPType(LTI_TYPE_MCP23008);
-    m_Lcd.begin(x,y); 
+    m_Lcd.begin(x,y);
     m_Lcd.setBacklight(HIGH);
 #elif defined(RGBLCD)
     m_Lcd.setMCPType(LTI_TYPE_MCP23017);
-    m_Lcd.begin(x,y,2); 
+    m_Lcd.begin(x,y,2);
     m_Lcd.setBacklight(WHITE);
 #endif
   }
-  void LcdPrint(const char *s) { 
-    if (m_Lcd.LcdDetected()) m_Lcd.print(s); 
+  void LcdPrint(const char *s) {
+    if (m_Lcd.LcdDetected()) m_Lcd.print(s);
   }
   void LcdPrint_P(const prog_char *s);
   void LcdPrint(int y,const char *s);
   void LcdPrint_P(int y,const prog_char *s);
-  void LcdPrint(int x,int y,const char *s) { 
+  void LcdPrint(int x,int y,const char *s) {
     m_Lcd.setCursor(x,y);
-    if (m_Lcd.LcdDetected()) m_Lcd.print(s); 
+    if (m_Lcd.LcdDetected()) m_Lcd.print(s);
   }
   void LcdPrint_P(int x,int y,const prog_char *s);
-  void LcdPrint(int i) { 
-    if (m_Lcd.LcdDetected()) m_Lcd.print(i); 
+  void LcdPrint(int i) {
+    if (m_Lcd.LcdDetected()) m_Lcd.print(i);
   }
-  void LcdSetCursor(int x,int y) { 
-    m_Lcd.setCursor(x,y); 
+  void LcdSetCursor(int x,int y) {
+    m_Lcd.setCursor(x,y);
   }
   void LcdClearLine(int y) {
     m_Lcd.setCursor(0,y);
     if (m_Lcd.LcdDetected()) m_Lcd.print(g_BlankLine);
   }
-  void LcdClear() { 
+  void LcdClear() {
     m_Lcd.clear();
   }
-  void LcdWrite(uint8_t data) { 
+  void LcdWrite(uint8_t data) {
     m_Lcd.write(data);
   }
   void LcdMsg(const char *l1,const char *l2);
@@ -371,13 +371,13 @@ public:
   boolean SelfTestSuccess() { return testSuccess; }
   boolean SelfTestInProgress() { return testInProgress; }
 #endif
-  
+
 };
 #endif // GFI
 
 
 typedef enum {
-  PILOT_STATE_P12,PILOT_STATE_PWM,PILOT_STATE_N12} 
+  PILOT_STATE_P12,PILOT_STATE_PWM,PILOT_STATE_N12}
 PILOT_STATE;
 class J1772Pilot {
 #ifndef PAFC_PWM
@@ -390,8 +390,8 @@ public:
   }
   void Init();
   void SetState(PILOT_STATE pstate); // P12/N12
-  PILOT_STATE GetState() { 
-    return m_State; 
+  PILOT_STATE GetState() {
+    return m_State;
   }
   int SetPWM(int amps); // 12V 1KHz PWM
 };
@@ -486,7 +486,7 @@ class J1772EVSEController {
   enum {both, L1on, L2on, none}
   PowerSTATE;
 // Define Service States UD = undefined state, L1 = level 1, L2 = level 2, OG = open ground, SR = stuck Relay, FG = Failed GFI
-  enum { UD, L1, L2, OG, SR, FG} 
+  enum { UD, L1, L2, OG, SR, FG}
   SVCSTATE;
 
   uint8_t doPost();
@@ -494,17 +494,17 @@ class J1772EVSEController {
   void chargingOn();
   void chargingOff();
   uint8_t chargingIsOn() { return m_bVFlags & ECVF_CHARGING_ON; }
-  void setFlags(uint8_t flags) { 
-    m_bFlags |= flags; 
+  void setFlags(uint8_t flags) {
+    m_bFlags |= flags;
   }
-  void clrFlags(uint8_t flags) { 
-    m_bFlags &= ~flags; 
+  void clrFlags(uint8_t flags) {
+    m_bFlags &= ~flags;
   }
-  void setFlags2(uint8_t flags) { 
-    m_bFlags2 |= flags; 
+  void setFlags2(uint8_t flags) {
+    m_bFlags2 |= flags;
   }
-  void clrFlags2(uint8_t flags) { 
-    m_bFlags2 &= ~flags; 
+  void clrFlags2(uint8_t flags) {
+    m_bFlags2 &= ~flags;
   }
 
 public:
@@ -517,53 +517,53 @@ public:
 
   uint8_t GetFlags() { return m_bFlags; }
   uint8_t GetFlags2() { return m_bFlags2; }
-  uint8_t GetState() { 
-    return m_EvseState; 
+  uint8_t GetState() {
+    return m_EvseState;
   }
-  uint8_t GetPrevState() { 
-    return m_PrevEvseState; 
+  uint8_t GetPrevState() {
+    return m_PrevEvseState;
   }
-  int StateTransition() { 
-    return (m_EvseState != m_PrevEvseState) ? 1 : 0; 
+  int StateTransition() {
+    return (m_EvseState != m_PrevEvseState) ? 1 : 0;
   }
-  uint8_t GetCurrentCapacity() { 
-    return m_CurrentCapacity; 
+  uint8_t GetCurrentCapacity() {
+    return m_CurrentCapacity;
   }
   int SetCurrentCapacity(uint8_t amps,uint8_t updatepwm=0);
   //int GetCurrentReading() { return m_CurrentReading; }
   //float GetCurrentAmps();
-  time_t GetElapsedChargeTime() { 
-    return m_ElapsedChargeTime; 
+  time_t GetElapsedChargeTime() {
+    return m_ElapsedChargeTime;
   }
-  time_t GetElapsedChargeTimePrev() { 
-    return m_ElapsedChargeTimePrev; 
+  time_t GetElapsedChargeTimePrev() {
+    return m_ElapsedChargeTimePrev;
   }
-  time_t GetChargeOffTime() { 
-    return m_ChargeOffTime; 
+  time_t GetChargeOffTime() {
+    return m_ChargeOffTime;
   }
   void Calibrate(PCALIB_DATA pcd);
-  uint8_t GetCurSvcLevel() { 
-    return (m_bFlags & ECF_L2) ? 2 : 1; 
+  uint8_t GetCurSvcLevel() {
+    return (m_bFlags & ECF_L2) ? 2 : 1;
   }
   void SetSvcLevel(uint8_t svclvl);
-  PTHRESH_DATA GetThreshData() { 
-    return &m_ThreshData; 
+  PTHRESH_DATA GetThreshData() {
+    return &m_ThreshData;
   }
-  uint8_t DiodeCheckEnabled() { 
+  uint8_t DiodeCheckEnabled() {
     return (m_bFlags & ECF_DIODE_CHK_DISABLED) ? 0 : 1;
   }
   void EnableDiodeCheck(uint8_t tf);
-  uint8_t VentReqEnabled() { 
+  uint8_t VentReqEnabled() {
     return (m_bFlags & ECF_VENT_REQ_DISABLED) ? 0 : 1;
   }
   void EnableVentReq(uint8_t tf);
 #ifdef ADVPWR
-  uint8_t GndChkEnabled() { 
+  uint8_t GndChkEnabled() {
     return (m_bFlags & ECF_GND_CHK_DISABLED) ? 0 : 1;
   }
   void EnableGndChk(uint8_t tf);
   void EnableStuckRelayChk(uint8_t tf);
-  uint8_t StuckRelayChkEnabled() { 
+  uint8_t StuckRelayChkEnabled() {
     return (m_bFlags & ECF_STUCK_RELAY_CHK_DISABLED) ? 0 : 1;
   }
   uint8_t AutoSvcLevelEnabled() { return (m_bFlags & ECF_AUTO_SVC_LEVEL_DISABLED) ? 0 : 1; }
@@ -581,13 +581,13 @@ public:
   void EnableGfiTest(uint8_t tf);
 #endif
 #endif // GFI
-  uint8_t SerDbgEnabled() { 
+  uint8_t SerDbgEnabled() {
     return (m_bFlags & ECF_SERIAL_DBG) ? 1 : 0;
   }
   // Function to suppport Auto Start feature - GoldServe
 #ifdef MANUALSTART
   void EnableAutoStart(uint8_t tf);
-  uint8_t AutoStartEnabled() { 
+  uint8_t AutoStartEnabled() {
     return (m_bFlags & ECF_AUTO_START_DISABLED) ? 0 : 1;
   }
 #endif //ifdef MANUALSTART
@@ -601,7 +601,7 @@ public:
 class Btn {
   uint8_t buttonState;
   long lastDebounceTime;  // the last time the output pin was toggled
-  
+
 public:
   Btn();
   void init();
@@ -616,7 +616,7 @@ class Menu {
 public:
   prog_char *m_Title;
   uint8_t m_CurIdx;
-  
+
   void init(const char *firstitem);
 
   Menu();
@@ -898,19 +898,19 @@ public:
   void Enable();
   void Disable();
   uint8_t IsTimerEnabled(){
-    return m_DelayTimerEnabled; 
+    return m_DelayTimerEnabled;
   };
   uint8_t GetStartTimerHour(){
-    return m_StartTimerHour; 
+    return m_StartTimerHour;
   };
   uint8_t GetStartTimerMin(){
-    return m_StartTimerMin; 
+    return m_StartTimerMin;
   };
   uint8_t GetStopTimerHour(){
-    return m_StopTimerHour; 
+    return m_StopTimerHour;
   };
   uint8_t GetStopTimerMin(){
-    return m_StopTimerMin; 
+    return m_StopTimerMin;
   };
   void SetStartTimer(uint8_t hour, uint8_t min){
     m_StartTimerHour = hour;
@@ -934,7 +934,7 @@ public:
          return 1;
        }
      } else {
-       return 0; 
+       return 0;
      }
   };
   void PrintTimerIcon();
@@ -1007,7 +1007,7 @@ void SaveSettings()
 #ifdef SERIALCLI
 CLI::CLI()
 {
-  m_CLIstrCount = 0; 
+  m_CLIstrCount = 0;
   m_strBuf = g_sTmp;
   m_strBufLen = sizeof(g_sTmp);
 }
@@ -1069,15 +1069,15 @@ void CLI::getInput()
     if ((inbyte == 13) || (m_CLIstrCount == CLI_BUFLEN-1)) { // if enter was pressed or max chars reached
       m_CLIinstr[m_CLIstrCount] = '\0';
       printlnn(); // print a newline
-      
-      if (strcmp_P(m_CLIinstr, PSTR("show")) == 0){ //if match SHOW 
+
+      if (strcmp_P(m_CLIinstr, PSTR("show")) == 0){ //if match SHOW
         info();
-        
+
         println_P(PSTR("Settings"));
 	print_P(PSTR("Service level: L"));
-	Serial.println((int)g_EvseController.GetCurSvcLevel()); 
+	Serial.println((int)g_EvseController.GetCurSvcLevel());
         print_P(PSTR("Current capacity (Amps): "));
-        Serial.println((int)g_EvseController.GetCurrentCapacity()); 
+        Serial.println((int)g_EvseController.GetCurrentCapacity());
         print_P(PSTR("Min Current Capacity: "));
         Serial.println(MIN_CURRENT_CAPACITY);
         print_P(PSTR("Max Current Capacity: "));
@@ -1092,7 +1092,7 @@ void CLI::getInput()
 	println_P(g_EvseController.GndChkEnabled() ? g_psEnabled : g_psDisabled);
 	print_P(PSTR("Stuck Relay Check: "));
 	println_P(g_EvseController.StuckRelayChkEnabled() ? g_psEnabled : g_psDisabled);
-#endif // ADVPWR           
+#endif // ADVPWR
         // Option to disable auto start - GoldServe
 #ifdef MANUALSTART
         print_P(PSTR("Auto Start: "));
@@ -1131,7 +1131,7 @@ void CLI::getInput()
         Serial.print(g_CurrTime.second(), DEC);
         // End Delay Timer feature - GoldServe
 #endif //#ifdef DELAYTIMER
-      } 
+      }
       else if ((strcmp_P(m_CLIinstr, PSTR("help")) == 0) || (strcmp_P(m_CLIinstr, PSTR("?")) == 0)){ // string compare
         println_P(PSTR("Help Commands"));
         printlnn();
@@ -1145,7 +1145,7 @@ void CLI::getInput()
         println_P(PSTR("timer - Delay timer commands"));
 #endif //#ifdef DELAYTIMER
         // End Delay Timer feature - GoldServe
-      } 
+      }
       else if (strcmp_P(m_CLIinstr, PSTR("set")) == 0) { // string compare
         println_P(PSTR("Set Commands - Usage: set amp"));
         printlnn();
@@ -1257,11 +1257,11 @@ void CLI::getInput()
 	  if(g_EvseController.SetCurrentCapacity(amp,1)) {
 	    println_P(PSTR("Invalid Setting"));
 	  }
-	  
+
 	  print_P(PSTR("Max current: ")); // print to the terminal
 	  Serial.print((int)g_EvseController.GetCurrentCapacity());
 	  print_P(PSTR("A"));
-	} 
+	}
 	else {
 	  goto unknown;
 	}
@@ -1269,12 +1269,12 @@ void CLI::getInput()
       else if (strcmp_P(m_CLIinstr, PSTR("save")) == 0){ // string compare
         println_P(PSTR("Saving to EEPROM")); // print to the terminal
         SaveSettings();
-      } 
+      }
       // Start Delay Timer feature - GoldServe
 #ifdef DELAYTIMER
       else if (strncmp_P(m_CLIinstr, PSTR("dt"), 2) == 0){ // string compare
         char *p = m_CLIinstr + 3;
-        
+
         if (strncmp_P(p,PSTR("set"),3) == 0) {
 	  p += 4;
 	  println_P(PSTR("Set Date/Time (mm/dd/yy hh:mm)"));
@@ -1293,12 +1293,12 @@ void CLI::getInput()
           print_P(PSTR("Minute (mm): "));
           g_min = getInt();
           Serial.println(g_min);
-          
+
           if (g_month + g_day + g_year + g_hour + g_min) {
             g_RTC.adjust(DateTime(g_year, g_month, g_day, g_hour, g_min, 0));
             println_P(PSTR("Date/Time Set"));
           } else {
-            println_P(PSTR("Date/Time NOT Set")); 
+            println_P(PSTR("Date/Time NOT Set"));
           }
 	}
         else {
@@ -1317,11 +1317,11 @@ void CLI::getInput()
           Serial.println();
           println_P(PSTR("Use 'dt set' to set the system date/time"));
 	}
-        
+
       }
       else if (strncmp_P(m_CLIinstr, PSTR("timer"), 5) == 0){ // string compare
         char *p = m_CLIinstr + 6;
-        
+
         if (strncmp_P(p,PSTR("set start"),9) == 0) {
           println_P(PSTR("Set Start Time (hh:mm)"));
           print_P(PSTR("Hour (hh): "));
@@ -1364,7 +1364,7 @@ void CLI::getInput()
           Serial.print(g_DelayTimer.GetStopTimerMin(), DEC);
           println_P(PSTR(" min"));
           if (!g_DelayTimer.IsTimerValid()){
-            println_P(PSTR("Start and Stop times can not be the same!"));  
+            println_P(PSTR("Start and Stop times can not be the same!"));
           }
           println_P(PSTR(""));
           println_P(PSTR("Use 'timer enable/disable' to enable/disable timer function"));
@@ -1376,7 +1376,7 @@ void CLI::getInput()
       else { // if the input text doesn't match any defined above
       unknown:
         println_P(PSTR("Unknown Command -- type help for command list")); // echo back to the terminal
-      } 
+      }
       printlnn();
       print_P(PSTR("OpenEVSE> "));
       g_CLI.flush();
@@ -1420,11 +1420,11 @@ OnboardDisplay::OnboardDisplay()
 #undef VIOLET
 #define VIOLET 0x7
 #undef WHITE
-#define WHITE 0x7 
+#define WHITE 0x7
 #endif // WHITELCD
 
 {
-} 
+}
 
 
 #ifdef DELAYTIMER
@@ -1440,7 +1440,7 @@ void OnboardDisplay::Init()
 
   SetGreenLed(LOW);
   SetRedLed(LOW);
-  
+
 #ifdef LCD16X2
   LcdBegin(LCD_MAX_CHARS_PER_LINE, 2);
 
@@ -1537,7 +1537,7 @@ void OnboardDisplay::Update()
   if (g_EvseController.StateTransition()) {
     // Optimize function call - GoldServe
     sprintf(g_sTmp,g_sRdyLAstr,(int)svclvl,(int)g_EvseController.GetCurrentCapacity());
-    
+
     switch(curstate) {
     case EVSE_STATE_A: // not connected
       SetGreenLed(HIGH);
@@ -1551,7 +1551,7 @@ void OnboardDisplay::Update()
       g_DelayTimer.PrintTimerIcon();
 #endif //#ifdef DELAYTIMER
       LcdPrint_P(g_psReady);
-      LcdPrint(10,0,g_sTmp);  
+      LcdPrint(10,0,g_sTmp);
       LcdPrint_P(1,g_psEvNotConnected);
       #endif //Adafruit RGB LCD
       // n.b. blue LED is off
@@ -1657,7 +1657,7 @@ void OnboardDisplay::Update()
 #ifdef LCD16X2
   if (curstate == EVSE_STATE_C) {
     time_t elapsedTime = g_EvseController.GetElapsedChargeTime();
-    if (elapsedTime != g_EvseController.GetElapsedChargeTimePrev()) {   
+    if (elapsedTime != g_EvseController.GetElapsedChargeTimePrev()) {
       int h = hour(elapsedTime);
       int m = minute(elapsedTime);
       int s = second(elapsedTime);
@@ -1762,7 +1762,7 @@ void J1772Pilot::Init()
   ICR1 = TOP;
   // WGM13 -> select P&F mode CS10 -> prescaler = 1
   TCCR1B = _BV(WGM13) | _BV(CS10);
- 
+
  #if (PILOT_PIN == 9)
   DDRB |= _BV(PORTB1);
   TCCR1A |= _BV(COM1A1);
@@ -1782,7 +1782,7 @@ void J1772Pilot::Init()
 
 // no PWM pilot signal - steady state
 // PILOT_STATE_P12 = steady +12V (EVSE_STATE_A - VEHICLE NOT CONNECTED)
-// PILOT_STATE_N12 = steady -12V (EVSE_STATE_F - FAULT) 
+// PILOT_STATE_N12 = steady -12V (EVSE_STATE_F - FAULT)
 void J1772Pilot::SetState(PILOT_STATE state)
 {
 #ifdef PAFC_PWM
@@ -1820,7 +1820,7 @@ void J1772Pilot::SetState(PILOT_STATE state)
 
 
 // set EVSE current capacity in Amperes
-// duty cycle 
+// duty cycle
 // outputting a 1KHz square wave to digital pin 10 via Timer 1
 //
 int J1772Pilot::SetPWM(int amps)
@@ -1846,7 +1846,7 @@ int J1772Pilot::SetPWM(int amps)
 #else // PILOT_PIN == 10
   OCR1B = cnt;
 #endif
-  
+
   m_State = PILOT_STATE_PWM;
 
   return 0;
@@ -1899,23 +1899,23 @@ J1772EVSEController::J1772EVSEController()
 
 void J1772EVSEController::chargingOn()
 {  // turn on charging current
-  digitalWrite(CHARGING_PIN,HIGH); 
-  digitalWrite(CHARGING_PIN2,HIGH); 
+  digitalWrite(CHARGING_PIN,HIGH);
+  digitalWrite(CHARGING_PIN2,HIGH);
   m_bVFlags |= ECVF_CHARGING_ON;
-  
+
   m_ChargeStartTime = now();
   m_ChargeStartTimeMS = millis();
 }
 
 void J1772EVSEController::chargingOff()
 { // turn off charging current
-  digitalWrite(CHARGING_PIN,LOW); 
-  digitalWrite(CHARGING_PIN2,LOW); 
+  digitalWrite(CHARGING_PIN,LOW);
+  digitalWrite(CHARGING_PIN2,LOW);
   m_bVFlags &= ~ECVF_CHARGING_ON;
 
   m_ChargeOffTime = now();
   m_ChargeOffTimeMS = millis();
-} 
+}
 
 #ifdef GFI
 inline void J1772EVSEController::SetGfiTripped()
@@ -2006,7 +2006,7 @@ void J1772EVSEController::EnableAutoSvcLevel(uint8_t tf)
 #endif // ADVPWR
 
 // Functions to support Auto Start feature - GoldServe
-#ifdef MANUALSTART 
+#ifdef MANUALSTART
 void J1772EVSEController::EnableAutoStart(uint8_t tf)
 {
   if (tf) {
@@ -2070,7 +2070,7 @@ void J1772EVSEController::SetSvcLevel(uint8_t svclvl)
   if ((ampacity == 0xff) || (ampacity == 0)) {
     ampacity = (svclvl == 1) ? DEFAULT_CURRENT_CAPACITY_L1 : DEFAULT_CURRENT_CAPACITY_L2;
   }
-  
+
   if (ampacity < MIN_CURRENT_CAPACITY) {
     ampacity = MIN_CURRENT_CAPACITY;
   }
@@ -2101,10 +2101,10 @@ uint8_t J1772EVSEController::doPost()
   int svcState = UD;	// service state = undefined
 
   m_Pilot.SetState(PILOT_STATE_P12); //check to see if EV is plugged in - write early so it will stabilize before reading.
-  g_OBD.SetRedLed(HIGH); 
+  g_OBD.SetRedLed(HIGH);
 #ifdef LCD16X2 //Adafruit RGB LCD
   g_OBD.LcdMsg_P(g_psPwrOn,g_psSelfTest);
-#endif //Adafruit RGB LCD 
+#endif //Adafruit RGB LCD
 
   if (AutoSvcLevelEnabled()) {
     int reading = analogRead(VOLT_PIN); //read pilot
@@ -2120,25 +2120,25 @@ uint8_t J1772EVSEController::doPost()
 
 // save state with both relays off - for stuck relay state
       RelayOff = (digitalRead(ACLINE1_PIN) << 1) +  digitalRead(ACLINE2_PIN);
-          
-// save state with Relay 1 on 
+
+// save state with Relay 1 on
       digitalWrite(CHARGING_PIN, HIGH);
       delay(RelaySettlingTime);
       Relay1 = (digitalRead(ACLINE1_PIN) << 1) +  digitalRead(ACLINE2_PIN);
       digitalWrite(CHARGING_PIN, LOW);
       delay(RelaySettlingTime); //allow relay to fully open before running other tests
-          
+
 // save state for Relay 2 on
-       digitalWrite(CHARGING_PIN2, HIGH); 
+       digitalWrite(CHARGING_PIN2, HIGH);
       delay(RelaySettlingTime);
       Relay2 = (digitalRead(ACLINE1_PIN) << 1) +  digitalRead(ACLINE2_PIN);
            digitalWrite(CHARGING_PIN2, LOW);
       delay(RelaySettlingTime); //allow relay to fully open before running other tests
-        
+
 // decide input power state based on the status read  on L1 and L2
-// either 2 SPST or 1 DPST relays can be configured 
-// valid svcState is L1 - one hot, L2 both hot, OG - open ground both off, SR - stuck relay when shld be off 
-//  
+// either 2 SPST or 1 DPST relays can be configured
+// valid svcState is L1 - one hot, L2 both hot, OG - open ground both off, SR - stuck relay when shld be off
+//
 	if (RelayOff == none) { // relay not stuck on when off
 	switch ( Relay1 ) {
 		case ( both ): //
@@ -2167,21 +2167,21 @@ uint8_t J1772EVSEController::doPost()
               g_CLI.print_P(PSTR("Relay1: "));Serial.println((int)Relay1);
               g_CLI.print_P(PSTR("Relay2: "));Serial.println((int)Relay2);
               g_CLI.print_P(PSTR("SvcState: "));Serial.println((int)svcState);
- }  
+ }
           #endif //#ifdef SERIALCLI
 
 // update LCD
 #ifdef LCD16X2 //Adafruit RGB LCD
 	  if (svcState == L1) g_OBD.LcdMsg_P(g_psAutoDetect,g_psLevel1);
 	  if (svcState == L2) g_OBD.LcdMsg_P(g_psAutoDetect,g_psLevel2);
-	  if ((svcState == OG) || (svcState == SR))  g_OBD.LcdSetBacklightColor(RED); 
+	  if ((svcState == OG) || (svcState == SR))  g_OBD.LcdSetBacklightColor(RED);
 	  if (svcState == OG) g_OBD.LcdMsg_P(g_psEarthGround,g_psTestFailed);
 	  if (svcState == SR) g_OBD.LcdMsg_P(g_psStuckRelay,g_psTestFailed);
 	   delay(500);
 #endif //Adafruit RGB LCD
 	} // endif test, no EV is plugged in
   } // endif AutoSvcLevelEnabled
-  
+
 #ifdef GFI_SELFTEST
   if (GfiSelfTestEnabled()) {
     m_Gfi.SelfTest();
@@ -2252,12 +2252,12 @@ void J1772EVSEController::Init()
 
 
 #ifdef ADVPWR  // Power on Self Test for Advanced Power Supply
- 
-  uint8_t fault; 
+
+  uint8_t fault;
   do {
      fault = 0; // reset post fault
   uint8_t psvclvl = doPost(); // auto detect service level overrides any saved values
-    
+
     if ((AutoSvcLevelEnabled()) && ((psvclvl == L1) || (psvclvl == L2)))  svclvl = psvclvl; //set service level
     if ((GndChkEnabled()) && (psvclvl == OG))  m_EvseState = EVSE_STATE_NO_GROUND, fault = 1; // set No Ground error
     if ((StuckRelayChkEnabled()) && (psvclvl == SR)) m_EvseState = EVSE_STATE_STUCK_RELAY, fault = 1; // set Stuck Relay error
@@ -2266,7 +2266,7 @@ void J1772EVSEController::Init()
 #endif
     if  ( fault ) delay(GFI_TIMEOUT); // if fault wait GFI_TIMEOUT till next check
   } while ( fault && ( m_EvseState == EVSE_STATE_GFI_TEST_FAILED || m_EvseState == EVSE_STATE_NO_GROUND ||  m_EvseState == EVSE_STATE_STUCK_RELAY ));
-#endif // ADVPWR  
+#endif // ADVPWR
 
   SetSvcLevel(svclvl);
 
@@ -2288,12 +2288,12 @@ void J1772EVSEController::Init()
 }
 
 //TABLE A1 - PILOT LINE VOLTAGE RANGES (recommended.. adjust as necessary
-//                           Minimum Nominal Maximum 
-//Positive Voltage, State A  11.40 12.00 12.60 
-//Positive Voltage, State B  8.36 9.00 9.56 
-//Positive Voltage, State C  5.48 6.00 6.49 
-//Positive Voltage, State D  2.62 3.00 3.25 
-//Negative Voltage - States B, C, D, and F -11.40 -12.00 -12.60 
+//                           Minimum Nominal Maximum
+//Positive Voltage, State A  11.40 12.00 12.60
+//Positive Voltage, State B  8.36 9.00 9.56
+//Positive Voltage, State C  5.48 6.00 6.49
+//Positive Voltage, State D  2.62 3.00 3.25
+//Negative Voltage - States B, C, D, and F -11.40 -12.00 -12.60
 void J1772EVSEController::Update()
 {
   if (m_EvseState == EVSE_STATE_DISABLED) {
@@ -2319,10 +2319,10 @@ void J1772EVSEController::Update()
     if (GndChkEnabled()) {
       if (((millis()-m_ChargeStartTimeMS) > GROUND_CHK_DELAY) && (PS1state == HIGH) && (PS2state == HIGH)) {
 	// bad ground
-	
+
 	tmpevsestate = EVSE_STATE_NO_GROUND;
 	m_EvseState = EVSE_STATE_NO_GROUND;
-	
+
 	chargingOff(); // open the relay
 
 	if (m_NoGndTripCnt < 255) {
@@ -2343,7 +2343,7 @@ void J1772EVSEController::Update()
       else {
 	tmpevsestate = EVSE_STATE_NO_GROUND;
 	m_EvseState = EVSE_STATE_NO_GROUND;
-	
+
 	nofault = 0;
       }
     }
@@ -2352,7 +2352,7 @@ void J1772EVSEController::Update()
          if ( (prevevsestate != EVSE_STATE_STUCK_RELAY) && (StuckRelayTripCnt == 0) ) { //check for first occurance
             m_StuckRelayStartTimeMS = millis(); // mark start state
             StuckRelayTripCnt++;
-         }   
+         }
         if ( ( ((millis()-m_ChargeOffTimeMS) > STUCK_RELAY_DELAY) && //  charge off de-bounce
                ((millis()-m_StuckRelayStartTimeMS) > STUCK_RELAY_DELAY) ) ||  // start delay de-bounce
         	(prevevsestate == EVSE_STATE_STUCK_RELAY) ) { // already in error state
@@ -2365,9 +2365,9 @@ void J1772EVSEController::Update()
       else StuckRelayTripCnt = 0; // not stuck - reset count
      } // end of StuckRelayChkEnabled
   } // end of !chargingIsOn() - relay open
-  
+
 #endif // ADVPWR
-   
+
 #ifdef GFI
   if (m_Gfi.Fault()) {
     tmpevsestate = EVSE_STATE_GFCI_FAULT;
@@ -2454,14 +2454,14 @@ void J1772EVSEController::Update()
   }
 
   m_TmpEvseState = tmpevsestate;
-  
+
   // state transition
   if (m_EvseState != prevevsestate) {
     if (m_EvseState == EVSE_STATE_A) { // connected, not ready to charge
       chargingOff(); // turn off charging current
       m_Pilot.SetState(PILOT_STATE_P12);
     }
-    else if (m_EvseState == EVSE_STATE_B) { // connected 
+    else if (m_EvseState == EVSE_STATE_B) { // connected
       chargingOff(); // turn off charging current
       m_Pilot.SetPWM(m_CurrentCapacity);
     }
@@ -2904,7 +2904,7 @@ void MaxCurrentMenu::Init()
       break;
     }
   }
-  
+
   sprintf(g_sTmp,"%s Max Current",(cursvclvl == 1) ? "L1" : "L2");
   g_OBD.LcdPrint(0,g_sTmp);
   sprintf(g_sTmp,"+%dA",m_MaxAmpsList[m_CurIdx]);
@@ -2931,7 +2931,7 @@ Menu *MaxCurrentMenu::Select()
   g_OBD.LcdPrint(m_MaxAmpsList[m_CurIdx]);
   g_OBD.LcdPrint("A");
   delay(500);
-  EEPROM.write((g_EvseController.GetCurSvcLevel() == 1) ? EOFS_CURRENT_CAPACITY_L1 : EOFS_CURRENT_CAPACITY_L2,m_MaxAmpsList[m_CurIdx]);  
+  EEPROM.write((g_EvseController.GetCurSvcLevel() == 1) ? EOFS_CURRENT_CAPACITY_L1 : EOFS_CURRENT_CAPACITY_L2,m_MaxAmpsList[m_CurIdx]);
   g_EvseController.SetCurrentCapacity(m_MaxAmpsList[m_CurIdx]);
   return &g_SetupMenu;
 }
@@ -3163,7 +3163,7 @@ Menu *RTCMenu::Select()
   if (m_CurIdx == 0) {
     return &g_RTCMenuMonth;
   } else {
-    return &g_SetupMenu; 
+    return &g_SetupMenu;
   }
 }
 RTCMenuMonth::RTCMenuMonth()
@@ -3564,7 +3564,7 @@ void AutoStartMenu::Init()
 }
 void AutoStartMenu::Next()
 {
-  
+
   if (++m_CurIdx >= 2) {
     m_CurIdx = 0;
   }
@@ -3575,7 +3575,7 @@ void AutoStartMenu::Next()
     g_OBD.LcdPrint("+");
   }
   g_OBD.LcdPrint(g_YesNoMenuItems[m_CurIdx]);
-  
+
 }
 Menu *AutoStartMenu::Select()
 {
@@ -3658,9 +3658,9 @@ void BtnHandler::ChkBtn()
         } else {
           g_EvseController.Enable();
         }
-#else  
+#else
 	g_EvseController.Enable();
-#endif        
+#endif
       }
     }
     else {
@@ -3723,7 +3723,7 @@ void DelayTimer::Init(){
   else {
     m_StopTimerMin = rtmp;
   }
-  
+
   FlexiTimer2::set(60000, DelayTimerInterrupt); // Set 1 minute interrupt for Delay Timer handling
   FlexiTimer2::start(); // Start interrupt
 }
@@ -3732,18 +3732,18 @@ void DelayTimer::CheckTime(){
     g_CurrTime = g_RTC.now();
     m_CurrHour = g_CurrTime.hour();
     m_CurrMin = g_CurrTime.minute();
-    
+
     if (IsTimerEnabled() && IsTimerValid()){
       uint16_t startTimerSeconds = m_StartTimerHour * 360 + m_StartTimerMin * 6;
       uint16_t stopTimerSeconds = m_StopTimerHour * 360 + m_StopTimerMin * 6;
       uint16_t currTimeSeconds = m_CurrHour * 360 + m_CurrMin * 6;
-      
+
       //Serial.println(startTimerSeconds);
       //Serial.println(stopTimerSeconds);
       //Serial.println(currTimeSeconds);
-      
+
       if (stopTimerSeconds < startTimerSeconds) {
-      //End time is for next day 
+      //End time is for next day
         if ( ( (currTimeSeconds >= startTimerSeconds) && (currTimeSeconds >= stopTimerSeconds) ) || ( (currTimeSeconds <= startTimerSeconds) && (currTimeSeconds <= stopTimerSeconds) ) ){
            // Within time interval
 #ifdef BTN_MENU
@@ -3752,11 +3752,11 @@ void DelayTimer::CheckTime(){
           if (g_EvseController.GetState() == EVSE_STATE_DISABLED){
 #endif //#ifdef BTN_MENU
   	    g_EvseController.Enable();
-          }           
+          }
         } else {
           if (currTimeSeconds == stopTimerSeconds) {
             // Not in time interval
-            g_EvseController.Disable();         
+            g_EvseController.Disable();
           }
         }
       } else {
@@ -3768,11 +3768,11 @@ void DelayTimer::CheckTime(){
           if (g_EvseController.GetState() == EVSE_STATE_DISABLED){
 #endif //#ifdef BTN_MENU
   	    g_EvseController.Enable();
-          }          
+          }
         } else {
           if (currTimeSeconds == stopTimerSeconds) {
             // Not in time interval
-            g_EvseController.Disable();          
+            g_EvseController.Disable();
           }
         }
       }
@@ -3823,13 +3823,13 @@ void EvseReset()
   g_OBD.Init();
 
   g_EvseController.Init();
-  
+
 }
 
 void setup()
 {
   wdt_disable();
-  
+
   Serial.begin(SERIAL_BAUD);
 
 #ifdef GFI
@@ -3848,11 +3848,11 @@ void setup()
   // AN INFINITE RESET LOOP
   wdt_enable(WDTO_1S);   // enable watchdog timer
 #endif // WATCHDOG
-} 
+}
 
 
 void loop()
-{ 
+{
 #ifdef WATCHDOG
   wdt_reset(); // pat the dog
 #endif // WATCHDOG
@@ -3864,7 +3864,7 @@ void loop()
   g_EvseController.Update();
 
   g_OBD.Update();
-  
+
 #ifdef BTN_MENU
   g_BtnHandler.ChkBtn();
 
