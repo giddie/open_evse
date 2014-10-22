@@ -243,10 +243,10 @@ prog_char VERSTR[] PROGMEM = "2.1.0";
 #ifdef RTC
 // Default start/stop timers for un-initialized EEPROMs.
 // Makes it easy to compile in default time without need to set it up the first time.
-#define DEFAULT_START_HOUR    0x00 //Start time: 00:05
-#define DEFAULT_START_MIN     0x05
-#define DEFAULT_STOP_HOUR     0x06 //End time: 6:55
-#define DEFAULT_STOP_MIN      0x37
+#define DEFAULT_START_HOUR    0x00 //Start time: 00:30
+#define DEFAULT_START_MIN     0x1E
+#define DEFAULT_STOP_HOUR     0x07 //End time: 7:30
+#define DEFAULT_STOP_MIN      0x1E
 #endif // RTC
 
 //-- end configuration
